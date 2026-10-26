@@ -1,28 +1,29 @@
 import java.util.*;
 
-public class Main{
-    public static void main(String [] args){
-        String [] reg = {"Ahmad", "UNDO", "Bimo", "Ahmad", "Chalid", "UNDO", "Derby", "Bimo"};
-        System.out.println(processRegistrations(reg));
-    }
 
-    public static List<String> processRegistrations(String[] entries){
-        // Write your implementation here.
-        Stack<String> regNames = new Stack<>();
-        Set<String> registrant = new LinkedHashSet<>();
-        ArrayList<String> reg = new ArrayList<>();
+public class Registration {
+    public static List<String> Registration (String[]entries){
+        Stack<String> stack = new Stack<>(); 
+        Set<String> activeRegistration = new HashSet<>(); 
 
-        for(String s:entries){
-            if(s.equalsIgnoreCase("UNDO") && !regNames.empty()){
-                regNames.pop();
-            }else{
-                regNames.push(s);
+        for (String entry : entries){
+            if ("UNDO".equals(entry)){
+                if(!stack.isEmpty()){
+                    String removedName = stack.pop(); 
+                    activeRegistration.remove(removedName); 
+                }
+            } else { 
+                if(!activeRegistration.contains(entry)){
+                    activeRegistration.add(entry);
+                    stack.push(entry); 
+                 }
             }
         }
-        
-        registrant.addAll(regNames);
-        reg.addAll(registrant);
-
-        return reg;
+        return new ArrayList<>(stack); 
+    }
+    public static void main(String[] args) {
+        String[] data = {"Alya", "Bima", "Alya", "Citra", "UNDO", "Dina", "UNDO", "Citra"};
+        List <String> hasil = Registration(data); 
+        System.out.println(hasil);       
     }
 }
